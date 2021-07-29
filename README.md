@@ -7,21 +7,22 @@ Repository of OpenClassrooms' [AI Engineer path](https://openclassrooms.com/fr/p
 Goal : use Jupyter Notebook and Scikit-Learn to create, assess and improve a scoring model based on the insurance's clients credit history.
 
 You can see the results here :
--   [Presentation]()
--   [HTML page with interactive plots]()
+
+- [Presentation]()
+- [HTML page with interactive plots]()
 
 ## Requirements
 
--   Conda
+- Conda
 
-````bash
+```bash
 # conda install jupyterlab ipywidgets numpy pandas matplotlib seaborn plotly statsmodels scikit-learn scikit-learn-intelex
 # conda install -c conda-forge voila
 # or :
 conda env update -f environment.yml
-````
+```
 
--   Pip
+- Pip
 
 ```bash
 # pip install jupyterlab ipywidgets numpy pandas matplotlib seaborn plotly statsmodels scikit-learn scikit-learn-intelex voila
@@ -33,18 +34,18 @@ pip install -r requirements.txt
 
 You can display the live Notebook with only the Markdown cells and code results (without the Python source code cells) with [Voilà](https://github.com/voila-dashboards/voila) :
 
--   Launch JupyterLab
+- Launch JupyterLab
 
-````bash
+```bash
 jupyter-lab
-````
+```
 
--   Execute the whole Notebook in JupyterLab (http://localhost:8888/lab/tree/notebook.ipynb)
--   Render the Notebook with Voilà : (http://localhost:8888/voila/render/notebook.ipynb)
+- Execute the whole Notebook in JupyterLab (http://localhost:8888/lab/tree/notebook.ipynb)
+- Render the Notebook with Voilà : (http://localhost:8888/voila/render/notebook.ipynb)
 
 ## Troubleshooting
 
--   Fix Plotly issues with JupyterLab
+- Fix Plotly issues with JupyterLab
 
 cf. [Plotly troubleshooting](https://plotly.com/python/troubleshooting/#jupyterlab-problems)
 
@@ -52,9 +53,9 @@ cf. [Plotly troubleshooting](https://plotly.com/python/troubleshooting/#jupyterl
 jupyter labextension install jupyterlab-plotly
 ```
 
--   If using Jupyter Notebook instead of JupyterLab, uncomment the following lines in the notebook
+- If using Jupyter Notebook instead of JupyterLab, uncomment the following lines in the notebook
 
-````python
+```python
 import plotly.io as pio
 pio.renderers.default='notebook'
-````
+```
