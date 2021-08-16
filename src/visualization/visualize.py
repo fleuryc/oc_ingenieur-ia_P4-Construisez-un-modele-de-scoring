@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 import numpy as np
 import pandas as pd
 
@@ -9,42 +12,36 @@ import plotly.express as px
 
 def plot_boxes(
     dataframe: pd.DataFrame,
-    categorical_column: str,
-    order_values: tuple[str] = None,
-    num_cols: int = 3,
+    plot_columns: Optional[list[str]] = None,
+    categorical_column: Optional[str] = None,
 ) -> None:
     """ Draw one boxplot per numerical variable, split per categories.
 
         Arguments :
         - dataframe : Pandas DataFrame containing the data, including the categorical_column and numerical_columns
+        - plot_columns : list of columns to plot, if None, all numerical columns are plotted
         - categorical_column : string representing the name of the variable containing the categories
-        - numerical_columns : list of strings representing the name of the numerical variables to plot
-        - order_values : list of strings representing the values of the numerical variables to plot
 
         Returns : None
     """
-    numerical_columns = dataframe.select_dtypes(
-        include="number"
-    ).columns.tolist()
+    if plot_columns is None:
+        plot_columns = dataframe.select_dtypes(
+            include="number"
+        ).columns.tolist()
 
-    num_lines = int(np.ceil(len(numerical_columns) / num_cols))
-    fig, axes = plt.subplots(
-        num_lines, num_cols, figsize=(8 * num_cols, 8 * num_lines)
-    )
-    fig.suptitle(
-        f"Numeric variables distribution, per { categorical_column }",
-        fontsize=24,
-    )
-
-    for i, col in enumerate(numerical_columns):
-        sns.boxplot(
-            data=dataframe,
+    for i, col in enumerate(plot_columns):
+        fig = px.box(
+            dataframe,
             x=categorical_column,
             y=col,
-            order=order_values,
-            showmeans=True,
-            ax=axes[int(np.floor(i / num_cols)), i % num_cols],
+            color=categorical_column,
+            title="Variable distribution per TARGET",
+            width=800,
+            height=400,
         )
+        fig.update_traces(boxmean="sd")
+        fig.update_traces(notched=True)
+        fig.show()
 
 
 def plot_empty_values(dataframe: pd.DataFrame) -> None:
@@ -77,30 +74,41 @@ def plot_empty_values(dataframe: pd.DataFrame) -> None:
         hover_data=["count"],
         title="Empty values per column",
         width=1200,
-        height=600,
+        height=800,
     )
     fig.show()
 
 
 # Let's define a function to plot multiple BoxPlots
-def plot_categories_bars(dataframe: pd.DataFrame) -> None:
+def plot_categories_bars(
+    dataframe: pd.DataFrame,
+    plot_columns: Optional[list[str]] = None,
+    categorical_column: Optional[str] = None,
+) -> None:
     """ Draw one bar chart per categorical or boolean variable, split per class and target.
 
         Arguments :
         - dataframe : Pandas DataFrame containing the data, including the categorical_columns and target column
+        - plot_columns : list of columns to plot, if None, all bool & category columns are plotted
+        - categorical_column : string representing the name of the variable containing the categories
 
         Returns : None
     """
-    for col in dataframe.select_dtypes(["bool", "category"]).columns:
-        df_g = dataframe.groupby([col, "TARGET"]).size().reset_index()
+    if plot_columns is None:
+        plot_columns = dataframe.select_dtypes(
+            include=["bool", "category"],
+        ).columns.tolist()
+
+    for col in plot_columns:
+        df_g = dataframe.groupby([col, categorical_column]).size().reset_index()
         df_g["percentage"] = (
-            dataframe.groupby([col, "TARGET"])
+            dataframe.groupby([col, categorical_column])
             .size()
             .groupby(level=0)
             .apply(lambda x: 100 * x / float(x.sum()))
             .values
         )
-        df_g.columns = [col, "TARGET", "Count", "Percentage"]
+        df_g.columns = [col, categorical_column, "Count", "Percentage"]
         df_g.sort_values(
             by=["Count", "Percentage"], ascending=False, inplace=True
         )
@@ -108,10 +116,10 @@ def plot_categories_bars(dataframe: pd.DataFrame) -> None:
             df_g,
             x=col,
             y=["Count"],
-            color="TARGET",
+            color=categorical_column,
             hover_data=["Percentage"],
-            title="Categories distribution and target ration",
-            width=1200,
-            height=600,
+            title="Categories distribution and TARGET ratio",
+            width=800,
+            height=400,
         )
         fig.show()
