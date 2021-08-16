@@ -2,14 +2,16 @@
 # Path: src/data/make_dataset.py
 
 import os
+import sys
 from dotenv import find_dotenv, load_dotenv
 import requests
 import zipfile
 import io
 
+import numpy as np
 import pandas as pd
 
-from typing import Final
+from typing import Any, Final
 
 # Load environment variables from .env file
 load_dotenv(find_dotenv())
