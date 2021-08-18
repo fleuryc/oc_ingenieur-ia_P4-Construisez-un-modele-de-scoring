@@ -3,6 +3,41 @@ from typing import Union, Optional
 import pandas as pd
 from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import IterativeImputer
+from sklearn.preprocessing import StandardScaler
+
+
+def scale_variables(dataframe: pd.DataFrame,) -> pd.DataFrame:
+    """ Scale specified variables in a dataframe using scikit-learn's StandardScaler
+
+        Returns a copy of the dataframe with scaled variables
+
+        Parameters
+        ----------
+        dataframe: pd.DataFrame
+            Dataframe to scale
+
+        Returns
+        -------
+        pd.DataFrame
+            Copy of the dataframe with scaled variables
+
+        Raises
+        ------
+        ValueError
+            If the dataframe contains non-numeric variables
+    """
+    # check if dataframe contains only numeric variables
+    if not dataframe.select_dtypes(include=["number"]).columns.all():
+        raise ValueError("Dataframe must contain only numeric variables")
+
+    # scale dataframe
+    scaler = StandardScaler()
+    scaler.fit(dataframe)
+    scaled_data = scaler.transform(dataframe)
+    scaled_df = pd.DataFrame(
+        scaled_data, columns=dataframe.columns, index=dataframe.index
+    )
+    return scaled_df
 
 
 def impute_missing_values(dataframe: pd.DataFrame,) -> pd.DataFrame:
