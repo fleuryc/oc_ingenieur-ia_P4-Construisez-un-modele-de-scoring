@@ -98,6 +98,8 @@ def drop_outliers(dataframe: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
     """ Remove outlier values from specified columns of DataFrame
 
         Compute the Inter-Quartile Ranges and set outliers to NaN
+
+        
     """
     # compute quartiles and define range
     quartiles = dataframe[columns].quantile([0.25, 0.75])
