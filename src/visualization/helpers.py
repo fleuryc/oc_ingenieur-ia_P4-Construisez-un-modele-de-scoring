@@ -106,3 +106,37 @@ def plot_categories_bars(
             height=400,
         )
         fig.show()
+
+
+def plot_boxes(
+    dataframe: pd.DataFrame,
+    plot_columns: Optional[list[str]] = None,
+    categorical_column: Optional[str] = None,
+) -> None:
+    """ Draw one boxplot per numerical variable, split per categories.
+
+        Arguments :
+        - dataframe : Pandas DataFrame containing the data, including the categorical_column and numerical_columns
+        - plot_columns : list of columns to plot, if None, all numerical columns are plotted
+        - categorical_column : string representing the name of the variable containing the categories
+
+        Returns : None
+    """
+    if plot_columns is None:
+        plot_columns = dataframe.select_dtypes(
+            include="number"
+        ).columns.tolist()
+
+    for i, col in enumerate(plot_columns):
+        fig = px.box(
+            dataframe,
+            y=col,
+            points=False,
+            color=categorical_column,
+            title=f"{col} distribution per TARGET",
+            width=800,
+            height=400,
+        )
+        fig.update_traces(boxmean="sd")
+        fig.update_traces(notched=True)
+        fig.show()
