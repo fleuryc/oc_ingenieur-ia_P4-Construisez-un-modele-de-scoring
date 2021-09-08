@@ -1,13 +1,20 @@
 """Helper functions, not project specific."""
 
-from typing import Any, Final, Optional
+from typing import Optional
 import logging
 
 import pandas as pd
 
 import matplotlib.pyplot as plt
-import seaborn as sns
 import plotly.express as px
+
+
+from sklearn.base import is_classifier, ClassifierMixin
+from sklearn.metrics import (
+    plot_confusion_matrix,
+    plot_precision_recall_curve,
+    plot_roc_curve,
+)
 
 
 def plot_empty_values(dataframe: pd.DataFrame) -> None:
@@ -140,3 +147,39 @@ def plot_boxes(
         fig.update_traces(boxmean="sd")
         fig.update_traces(notched=True)
         fig.show()
+
+
+def plot_classifier_results(
+    classifier: ClassifierMixin,
+    X_test: pd.DataFrame,
+    y_test: pd.Series,
+) -> None:
+    """Plots the confusion_matrix, precision_recall_curve and roc_curve of a classifier on test data.
+
+    Args:
+        classifier (ClassifierMixin): sklearn Classifier
+        X_test (pd.DataFrame): test data
+        y_test (pd.Series): true values
+    """
+    if not is_classifier(classifier):
+        logging.error(f"{classifier} is not a classifier.")
+        raise ValueError(f"{classifier} is not a classifier.")
+
+    plot_confusion_matrix(classifier, X_test, y_test)
+    plt.show()
+
+    plot_precision_recall_curve(
+        classifier,
+        X_test,
+        y_test,
+        name=classifier.__class__.__name__,
+    )
+    plt.show()
+
+    plot_roc_curve(
+        classifier,
+        X_test,
+        y_test,
+        name=classifier.__class__.__name__,
+    )
+    plt.show()

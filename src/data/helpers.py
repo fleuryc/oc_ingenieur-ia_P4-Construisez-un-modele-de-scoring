@@ -45,13 +45,13 @@ def download_extract_zip(
     r = requests.get(zip_file_url)
     if r.status_code != 200:
         logging.error(f"Error downloading {zip_file_url}")
-        raise Exception(f"Failed to download {zip_file_url}")
+        raise ValueError(f"Failed to download {zip_file_url}")
 
     # Check if zip file is OK
     z = zipfile.ZipFile(io.BytesIO(r.content))
     if z.testzip() is not None:
         logging.error(f"Error extracting {zip_file_url}")
-        raise Exception(f"Failed to extract {zip_file_url}")
+        raise ValueError(f"Failed to extract {zip_file_url}")
 
     # Check if content path exists
     if not os.path.exists(target_path):
