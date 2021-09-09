@@ -3,13 +3,14 @@
 from typing import Optional
 import logging
 
+import numpy as np
 import pandas as pd
 
 import matplotlib.pyplot as plt
 import plotly.express as px
 
-
 from sklearn.base import is_classifier, ClassifierMixin
+from sklearn.decomposition import PCA
 from sklearn.metrics import (
     plot_confusion_matrix,
     plot_precision_recall_curve,
@@ -183,3 +184,51 @@ def plot_classifier_results(
         name=classifier.__class__.__name__,
     )
     plt.show()
+
+
+def plot_pca_2d(
+    data: pd.DataFrame,
+    categories: pd.DataFrame,
+) -> None:
+    """ Draw a 2D PCA plot of the data and the feture importances.
+
+        Arguments :
+        - data : Pandas DataFrame containing the data
+        - categories : Pandas DataFrame containing the categories
+
+        Returns : None
+    """
+    pca = PCA(n_components=2)
+    data_pca = pca.fit_transform(data)
+
+    # Plot the data in the PCA space
+    fig = px.scatter(
+        x=data_pca[:, 0],
+        y=data_pca[:, 1],
+        color=categories.values.flatten(),
+        symbol=categories.values.flatten(),
+        title="PCA 2D",
+        opacity=.5,
+        width=1200,
+        height=800,
+    )
+
+    # Plot the feature importances in the PCA space
+    loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
+    for i, feature in enumerate(data.columns):
+        fig.add_shape(
+            type='line',
+            x0=0, y0=0,
+            x1=loadings[i, 0],
+            y1=loadings[i, 1],
+        )
+        fig.add_annotation(
+            x=loadings[i, 0],
+            y=loadings[i, 1],
+            ax=0, ay=0,
+            xanchor="center",
+            yanchor="bottom",
+            text=feature,
+        )
+
+    fig.show()

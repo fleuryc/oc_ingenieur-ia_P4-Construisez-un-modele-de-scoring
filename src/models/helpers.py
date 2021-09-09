@@ -1,14 +1,13 @@
 """Helper functions, not project specific."""
 from typing import Any, Final, Optional, Union
 import logging
+from time import time
 
 import pandas as pd
 
 from sklearn.base import is_classifier, ClassifierMixin
-
 from sklearn.experimental import enable_halving_search_cv
 from sklearn.model_selection import HalvingRandomSearchCV, StratifiedKFold
-
 from sklearn.metrics import (
     confusion_matrix,
     f1_score,
@@ -21,6 +20,10 @@ from sklearn.metrics import (
     roc_curve,
     log_loss,
 )
+
+# Hide warnings
+import warnings
+warnings.simplefilter(action='ignore', category=UserWarning)
 
 
 def find_best_params_classifier(
@@ -47,7 +50,7 @@ def find_best_params_classifier(
         # recall.
         scoring='f1',
 
-        verbose=9,
+        verbose=0,
         n_jobs=-1,
         random_state=42,
     ).fit(
@@ -55,7 +58,9 @@ def find_best_params_classifier(
         y=y_train,
     )
 
+    start_time = time()
     y_pred = clf.predict(X_test)
+    predict_time = time() - start_time
 
     if hasattr(clf, 'predict_proba'):
         y_pred_proba = clf.predict_proba(X_test)[:, 1]
@@ -68,7 +73,7 @@ def find_best_params_classifier(
         'model': clf.best_estimator_,
         'params': clf.best_params_,
         'score': clf.best_score_,
-        'time': clf.refit_time_,
+        'predict_time': predict_time,
         'cv_results_': clf.cv_results_,
         'best_index_': clf.best_index_,
         'confusion_matrix': confusion_matrix(y_test, y_pred),
