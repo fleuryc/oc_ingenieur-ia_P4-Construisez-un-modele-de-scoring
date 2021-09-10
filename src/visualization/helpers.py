@@ -208,7 +208,7 @@ def plot_pca_2d(
         color=categories.values.flatten(),
         symbol=categories.values.flatten(),
         title="PCA 2D",
-        opacity=.5,
+        opacity=.2,
         width=1200,
         height=800,
     )
