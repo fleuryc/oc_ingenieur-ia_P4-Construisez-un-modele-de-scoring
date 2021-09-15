@@ -1,5 +1,5 @@
 """Helper functions, not project specific."""
-from typing import Any, Final, Optional, Union
+from typing import Any, Union
 import logging
 from time import time
 
@@ -18,12 +18,11 @@ from sklearn.metrics import (
     precision_recall_curve,
     roc_auc_score,
     roc_curve,
-    log_loss,
 )
 
 # Hide warnings
 import warnings
-warnings.simplefilter(action='ignore', category=UserWarning)
+warnings.filterwarnings(action='ignore', category=UserWarning)
 
 
 def find_best_params_classifier(
@@ -43,14 +42,14 @@ def find_best_params_classifier(
         ## StratifiedKFold Cross Validator
         # StratifiedKFold permet de séparer les données en nombre de folds de manière stratifiée.
         # Les proportions des classes sont conservées.
-        cv=StratifiedKFold(n_splits=10, shuffle=True, random_state=42),
+        cv=StratifiedKFold(n_splits=5, shuffle=True, random_state=42),
 
         ## F1 Score
         # F1 Score permet de mesurer la qualité d'un modèle en évaluant la précision et le
         # recall.
         scoring='f1',
 
-        verbose=0,
+        verbose=1,
         n_jobs=-1,
         random_state=42,
     ).fit(

@@ -166,23 +166,34 @@ def plot_classifier_results(
         logging.error(f"{classifier} is not a classifier.")
         raise ValueError(f"{classifier} is not a classifier.")
 
-    plot_confusion_matrix(classifier, X_test, y_test)
-    plt.show()
+
+    _, ax = plt.subplots(
+        nrows=1,
+        ncols=3,
+        figsize=(24, 8),
+    )
+
+    plot_confusion_matrix(
+        classifier, X_test, y_test,
+        ax=ax[0],
+    )
 
     plot_precision_recall_curve(
         classifier,
         X_test,
         y_test,
         name=classifier.__class__.__name__,
+        ax=ax[1],
     )
-    plt.show()
 
     plot_roc_curve(
         classifier,
         X_test,
         y_test,
         name=classifier.__class__.__name__,
+        ax=ax[2],
     )
+
     plt.show()
 
 
