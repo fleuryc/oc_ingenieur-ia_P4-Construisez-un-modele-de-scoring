@@ -9,7 +9,7 @@ Goal : use Jupyter Notebook and Scikit-Learn to create, assess and improve a sco
 You can see the results here :
 
 - [Presentation]()
-- [HTML page with interactive plots]()
+- [HTML page with interactive plots](https://fleuryc.github.io/oc_ingenieur-ia_P4-Construisez-un-modele-de-scoring/notebook.html)
 
 ## Requirements
 
