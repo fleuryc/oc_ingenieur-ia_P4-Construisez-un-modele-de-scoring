@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 
 from sklearn.base import is_classifier, ClassifierMixin
+from sklearn.inspection import permutation_importance
 from sklearn.decomposition import PCA
 from sklearn.metrics import (
     plot_confusion_matrix,
@@ -194,6 +195,40 @@ def plot_classifier_results(
         ax=ax[2],
     )
 
+    plt.show()
+
+
+def plot_permutation_importance(
+    model: ClassifierMixin,
+    X: pd.DataFrame,
+    y: pd.Series,
+) -> None:
+    """Plot the permutation importances of each variable as a BoxPlot
+
+    Args:
+        model (ClassifierMixin): Fitted classifier
+        X (pd.DataFrame): X variables
+        y (pd.Series): Targer variable
+    """
+    importances = permutation_importance(
+        model,
+        X,
+        y,
+        n_repeats=10,
+        random_state=42,
+        n_jobs=-1,
+    )
+    sorted_idx = importances.importances_mean.argsort()
+    sorted_idx = list(sorted_idx[:10]) + list(sorted_idx[-10:])
+
+    fig, ax = plt.subplots()
+    ax.boxplot(
+        importances.importances[sorted_idx].T,
+        vert=False,
+        labels=X.columns[sorted_idx],
+    )
+    ax.set_title("Permutation Importances")
+    fig.set_size_inches(10, 10)
     plt.show()
 
 

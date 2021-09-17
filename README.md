@@ -16,8 +16,7 @@ You can see the results here :
 - Conda
 
 ```bash
-# conda install jupyterlab ipywidgets numpy pandas matplotlib seaborn plotly statsmodels scikit-learn scikit-learn-intelex
-# conda install -c conda-forge voila
+# conda install -c conda-forge jupyterlab ipywidgets numpy pandas matplotlib seaborn plotly statsmodels imbalanced-learn scikit-learn scikit-learn-intelex auto-sklearn xgboost lightgbm graphviz python-graphviz lime shap
 # or :
 conda env update -f environment.yml
 ```
@@ -25,23 +24,10 @@ conda env update -f environment.yml
 - Pip
 
 ```bash
-# pip install jupyterlab ipywidgets numpy pandas matplotlib seaborn plotly statsmodels scikit-learn scikit-learn-intelex voila
+# pip install jupyterlab ipywidgets numpy pandas matplotlib seaborn plotly statsmodels imbalanced-learn scikit-learn scikit-learn-intelex auto-sklearn xgboost lightgbm graphviz python-graphviz lime shap
 # or :
 pip install -r requirements.txt
 ```
-
-## Showcase with Voilà
-
-You can display the live Notebook with only the Markdown cells and code results (without the Python source code cells) with [Voilà](https://github.com/voila-dashboards/voila) :
-
-- Launch JupyterLab
-
-```bash
-jupyter-lab
-```
-
-- Execute the whole Notebook in JupyterLab (http://localhost:8888/lab/tree/notebook.ipynb)
-- Render the Notebook with Voilà : (http://localhost:8888/voila/render/notebook.ipynb)
 
 ## Troubleshooting
 

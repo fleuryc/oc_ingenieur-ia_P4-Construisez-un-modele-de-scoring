@@ -30,6 +30,22 @@ def find_best_params_classifier(
     estimator: ClassifierMixin,
     params: dict[str, list[Union[str, float, int, bool]]] = {},
 ) -> dict[str, Any]:
+    """Runs cross validation to find the best hyper-parameters of estimator.
+
+    Args:
+        X_train (pd.DataFrame): training data
+        y_train (pd.Series): training labels
+        X_test (pd.DataFrame): testing data
+        y_test (pd.Series): testing labels
+        estimator (ClassifierMixin): Classifier
+        params (dict[str, list[Union[str, float, int, bool]]], optional): hyper-parameters range for cross validation. Defaults to {}.
+
+    Raises:
+        ValueError: Error if estimator is not a classifier
+
+    Returns:
+        dict[str, Any]: Classifier optimization results.
+    """
 
     if not is_classifier(estimator):
         logging.error(f"{estimator} is not a classifier.")
@@ -49,7 +65,7 @@ def find_best_params_classifier(
         # recall.
         scoring='f1',
 
-        verbose=1,
+        verbose=0,
         n_jobs=-1,
         random_state=42,
     ).fit(
@@ -69,12 +85,49 @@ def find_best_params_classifier(
         y_pred_proba = y_pred
 
     return {
+        'classifier': clf,
         'model': clf.best_estimator_,
         'params': clf.best_params_,
         'score': clf.best_score_,
         'predict_time': predict_time,
         'cv_results_': clf.cv_results_,
         'best_index_': clf.best_index_,
+        'confusion_matrix': confusion_matrix(y_test, y_pred),
+        'f1': f1_score(y_test, y_pred),
+        'accuracy': accuracy_score(y_test, y_pred),
+        'precision': precision_score(y_test, y_pred),
+        'recall': recall_score(y_test, y_pred),
+        'average_precision': average_precision_score(y_test, y_pred_proba),
+        'precision_recall_curve': precision_recall_curve(y_test, y_pred_proba),
+        'roc_auc_score': roc_auc_score(y_test, y_pred_proba),
+        'roc_curve': roc_curve(y_test, y_pred_proba),
+    }
+
+
+def automl_classifier(
+    X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame, y_test: pd.Series,
+    estimator: ClassifierMixin,
+) -> dict[str, Any]:
+
+    if not is_classifier(estimator):
+        logging.error(f"{estimator} is not a classifier.")
+        raise ValueError(f"{estimator} is not a classifier.")
+
+    clf = estimator.fit(X_train, y_train)
+
+    start_time = time()
+    y_pred = clf.predict(X_test)
+    predict_time = time() - start_time
+
+    y_pred_proba = clf.predict_proba(X_test)[:, 1]
+
+    return {
+        'model': clf,
+        'params': clf.get_params(),
+        'score': float(pd.DataFrame(clf.cv_results_)[['mean_test_score']].max()),
+        'predict_time': predict_time,
+        'cv_results_': clf.cv_results_,
+        'best_index_': int(pd.DataFrame(clf.cv_results_)[['mean_test_score']].idxmax()),
         'confusion_matrix': confusion_matrix(y_test, y_pred),
         'f1': f1_score(y_test, y_pred),
         'accuracy': accuracy_score(y_test, y_pred),
