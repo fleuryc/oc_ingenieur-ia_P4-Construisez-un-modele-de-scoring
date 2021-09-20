@@ -1,6 +1,6 @@
 """Helper functions, not project specific."""
 
-from typing import Optional
+from typing import Optional, Union
 import logging
 
 import numpy as np
@@ -8,6 +8,7 @@ import pandas as pd
 
 import matplotlib.pyplot as plt
 import plotly.express as px
+from scipy.stats import f_oneway
 
 from sklearn.base import is_classifier, ClassifierMixin
 from sklearn.inspection import permutation_importance
@@ -17,6 +18,46 @@ from sklearn.metrics import (
     plot_precision_recall_curve,
     plot_roc_curve,
 )
+
+
+def plot_oneway_anova_p_values(
+    dataframe: pd.DataFrame,
+    categorical_column: str,
+    classes: tuple[Union[str, float, int], Union[str, float, int]],
+) -> None:
+    """Plot a histogram of the p-values of each numerical column of the dataframe, split by categorical column.
+
+    Args:
+        dataframe (pd.DataFrame): The DataFrame to plot.
+        categorical_column (str): The name of the categorical column.
+        classes (tuple): The list of classes of the categorical column.
+
+    Returns:
+        None.
+    """
+    anova = pd.DataFrame({})
+
+    for col in dataframe.select_dtypes('number').columns:
+        anova.loc[col, 'p_value'] = f_oneway(
+            dataframe.loc[dataframe[categorical_column] == classes[0], col].dropna(),
+            dataframe.loc[dataframe[categorical_column] == classes[1], col].dropna(),
+        )[1]
+
+    # Plot the bar chart with Plotly Express
+    fig = px.bar(
+        anova.sort_values(by='p_value', ascending=True),
+        color="p_value",
+        y="p_value",
+        hover_data=["p_value"],
+        title="ANOVA P-Value",
+        labels={
+            "p_value": "P-Value",
+            "index": "Feature",
+        },
+        width=1400,
+        height=800,
+    )
+    fig.show()
 
 
 def plot_empty_values(dataframe: pd.DataFrame) -> None:
