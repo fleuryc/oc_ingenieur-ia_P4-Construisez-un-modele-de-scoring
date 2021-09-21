@@ -312,6 +312,7 @@ def plot_pca_2d(
         y=data_pca[:, 1],
         color=categories.values.flatten(),
         symbol=categories.values.flatten(),
+        trendline="ols",
         title="PCA 2D",
         opacity=0.2,
         width=1200,
