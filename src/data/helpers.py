@@ -27,7 +27,6 @@ def download_extract_zip(
     Returns:
         None
     """
-
     # We must NOT download and extract zip file by default.
     must_download: bool = False
 
