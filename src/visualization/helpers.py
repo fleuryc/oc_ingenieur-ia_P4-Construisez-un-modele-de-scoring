@@ -192,7 +192,7 @@ def plot_boxes(
             include="number"
         ).columns.tolist()
 
-    for i, col in enumerate(plot_columns):
+    for col in plot_columns:
         fig = px.box(
             dataframe,
             y=col,
@@ -262,7 +262,7 @@ def plot_permutation_importance(
     X: pd.DataFrame,
     y: pd.Series,
 ) -> None:
-    """Plot the permutation importances of each variable as a BoxPlot
+    """Plot the permutation importances of each variable as a BoxPlot.
 
     Args:
         model (ClassifierMixin): Fitted classifier

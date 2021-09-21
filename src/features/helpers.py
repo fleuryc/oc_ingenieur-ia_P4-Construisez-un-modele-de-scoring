@@ -9,8 +9,7 @@ def drop_impossible_values(
     dataframe: pd.DataFrame,
     constraints=dict[str, dict[str, Union[int, float]]],
 ) -> pd.DataFrame:
-    """
-    Drop values from a dataframe that have impossible or unlikely values.
+    """Drop values from a dataframe that have impossible or unlikely values.
 
     :param dataframe: The dataframe to be filtered.
     :param constraints: A dictionary of constraints to be applied.

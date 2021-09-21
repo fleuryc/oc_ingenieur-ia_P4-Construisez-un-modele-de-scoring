@@ -31,8 +31,7 @@ def find_best_params_classifier(
     estimator: ClassifierMixin,
     params: dict[str, list[Union[str, float, int, bool]]] = None,
 ) -> dict[str, Any]:
-    """
-    Runs cross validation to find the best hyper-parameters of estimator.
+    """Runs cross validation to find the best hyper-parameters of estimator.
 
     Args:
         X_train (pd.DataFrame): training data
@@ -49,7 +48,6 @@ def find_best_params_classifier(
     Returns:
         dict[str, Any]: Classifier optimization results.
     """
-
     if not is_classifier(estimator):
         logging.error(f"{estimator} is not a classifier.")
         raise ValueError(f"{estimator} is not a classifier.")
