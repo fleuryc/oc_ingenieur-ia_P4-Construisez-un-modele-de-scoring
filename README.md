@@ -1,4 +1,4 @@
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/dd4a397e7bfe43a5bcf16ff7e6a2056a)](https://www.codacy.com/gh/fleuryc/oc_ingenieur-ia_P4-Construisez-un-modele-de-scoring/dashboard)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/dd4a397e7bfe43a5bcf16ff7e6a2056a)](https://www.codacy.com/gh/fleuryc/oc_ingenieur-ia_P4-Construisez-un-modele-de-scoring/dashboard) [![CodeQL](https://github.com/fleuryc/oc_ingenieur-ia_P4-Construisez-un-modele-de-scoring/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/fleuryc/oc_ingenieur-ia_P4-Construisez-un-modele-de-scoring/actions/workflows/codeql-analysis.yml)
 
 # Home Credit : Create a scoring model for a bank
 
