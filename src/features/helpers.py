@@ -1,7 +1,6 @@
 """Helper functions, not project specific."""
 
-from typing import Any, Final, Optional, Union
-import logging
+from typing import Union
 
 import pandas as pd
 
@@ -12,6 +11,7 @@ def drop_impossible_values(
 ) -> pd.DataFrame:
     """
     Drop values from a dataframe that have impossible or unlikely values.
+
     :param dataframe: The dataframe to be filtered.
     :param constraints: A dictionary of constraints to be applied.
 
@@ -24,7 +24,6 @@ def drop_impossible_values(
             'max': 60
         }
     }
-
     """
     for col in dataframe.columns:
         if col in constraints:

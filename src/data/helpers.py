@@ -1,16 +1,20 @@
 """Helper functions, not project specific."""
 
-import os
-import requests
-import zipfile
 import io
 import logging
+import os
+import zipfile
+
+import requests
 
 
 def download_extract_zip(
-    zip_file_url: str, files_names: tuple[str], target_path: str,
+    zip_file_url: str,
+    files_names: tuple[str],
+    target_path: str,
 ) -> None:
-    """Download Zip from url and extract content files to local path.
+    """
+    Download Zip from url and extract content files to local path.
 
     - Check if content files already exist.
         - If they all exist, return.

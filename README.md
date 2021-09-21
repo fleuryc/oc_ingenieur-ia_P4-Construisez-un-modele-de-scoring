@@ -8,12 +8,12 @@ Goal : use Jupyter Notebook and Scikit-Learn to create, assess and improve a sco
 
 You can see the results here :
 
-- [Presentation](https://fleuryc.github.io/oc_ingenieur-ia_P4-Construisez-un-modele-de-scoring/index.html)
-- [HTML page with interactive plots](https://fleuryc.github.io/oc_ingenieur-ia_P4-Construisez-un-modele-de-scoring/notebook.html)
+-   [Presentation](https://fleuryc.github.io/oc_ingenieur-ia_P4-Construisez-un-modele-de-scoring/index.html)
+-   [HTML page with interactive plots](https://fleuryc.github.io/oc_ingenieur-ia_P4-Construisez-un-modele-de-scoring/notebook.html)
 
 ## Requirements
 
-- Conda
+-   Conda
 
 ```bash
 # conda install -c conda-forge jupyterlab ipywidgets numpy pandas matplotlib seaborn plotly statsmodels imbalanced-learn scikit-learn scikit-learn-intelex auto-sklearn xgboost lightgbm graphviz python-graphviz lime shap
@@ -21,7 +21,7 @@ You can see the results here :
 conda env update -f environment.yml
 ```
 
-- Pip
+-   Pip
 
 ```bash
 # pip install jupyterlab ipywidgets numpy pandas matplotlib seaborn plotly statsmodels imbalanced-learn scikit-learn scikit-learn-intelex auto-sklearn xgboost lightgbm graphviz python-graphviz lime shap
@@ -31,7 +31,7 @@ pip install -r requirements.txt
 
 ## Troubleshooting
 
-- Fix Plotly issues with JupyterLab
+-   Fix Plotly issues with JupyterLab
 
 cf. [Plotly troubleshooting](https://plotly.com/python/troubleshooting/#jupyterlab-problems)
 
@@ -39,7 +39,7 @@ cf. [Plotly troubleshooting](https://plotly.com/python/troubleshooting/#jupyterl
 jupyter labextension install jupyterlab-plotly
 ```
 
-- If using Jupyter Notebook instead of JupyterLab, uncomment the following lines in the notebook
+-   If using Jupyter Notebook instead of JupyterLab, uncomment the following lines in the notebook
 
 ```python
 import plotly.io as pio
